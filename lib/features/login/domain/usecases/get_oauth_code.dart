@@ -13,27 +13,14 @@ class GetAccessTokenUseCase implements UseCase<LoginEntity, Params> {
   @override
   Future<Either<Failure, LoginEntity>> call(Params params) async {
     return await iLoginRepository.getAuthorizationCode(
-        codeChallenge: params.codeChallenge,
-        codeVerifier: params.codeVerifier,
-        state: params.state,
-        returnedUrl: params.returnedUrl,
-        client: params.client);
+        returnedUrl: params.returnedUrl, grant: params.grant);
   }
 }
 
 class Params extends Equatable {
-  String codeChallenge;
-  String codeVerifier;
-  String state;
-  String returnedUrl;
-  Client client;
-  Params(
-      {required this.codeChallenge,
-      required this.codeVerifier,
-      required this.state,
-      required this.returnedUrl,
-      required this.client});
+  final String returnedUrl;
+  final AuthorizationCodeGrant grant;
+  Params({required this.returnedUrl, required this.grant});
   @override
-  List<Object?> get props =>
-      [codeChallenge, codeVerifier, state, returnedUrl, client];
+  List<Object?> get props => [returnedUrl, grant];
 }

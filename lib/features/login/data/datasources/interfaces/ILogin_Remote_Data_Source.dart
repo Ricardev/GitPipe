@@ -6,9 +6,5 @@ import 'package:oauth2/oauth2.dart';
 
 abstract class ILoginRemoteDataSource {
   Future<LoginEntity> getAccessToken(
-      {required String codeChallenge,
-      required String codeVerifier,
-      required String state,
-      required String returnedUrl,
-      required Client client});
+      {required String returnedUrl, required AuthorizationCodeGrant grant});
 }

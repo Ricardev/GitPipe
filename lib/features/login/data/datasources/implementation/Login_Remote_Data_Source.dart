@@ -15,23 +15,10 @@ class LoginRemoteDataSource implements ILoginRemoteDataSource {
 
   @override
   Future<LoginEntity> getAccessToken(
-      {required String codeChallenge,
-      required String codeVerifier,
-      required String state,
-      required String returnedUrl,
-      required Client client}) async {
-    List<String> urlParts = returnedUrl.split('code=');
-    String code = urlParts.last;
-
-    String parameters = """?client_id=${GitPipe.appIdentifier}&
-        client_secret=${GitPipe.secret}&
-        code=$code&
-        grant_type=${GrantType.authorizationCode}&
-        redirect_uri=${GitPipe.redirectUrl}&
-        code_verifier=$codeVerifier""";
-    Uri tokenUrl = Uri.parse(GitPipe.accessTokenEndpoint + parameters);
-    Options options = Options();
-    late final Response responseAccessToken;
+      {required String returnedUrl,
+      required AuthorizationCodeGrant grant}) async {
+    Client client = await grant
+        .handleAuthorizationResponse(Uri.parse(returnedUrl).queryParameters);
 
     Map<String, dynamic> token = {
       "access_token": client.credentials.accessToken,

@@ -21,18 +21,11 @@ abstract class _LoginBlocBase with Store {
 
   @action
   Future<void> getAccessToken(
-      {required String codeChallenge,
-      required String codeVerifier,
-      required String state,
-      required String returnedUrl,
-      required Client client}) async {
+      {required String returnedUrl,
+      required AuthorizationCodeGrant grant}) async {
     loginState = ApplicationState.Loading;
-    final failureOrLoginEntity = await getAccessTokenUseCase(Params(
-        codeChallenge: codeChallenge,
-        codeVerifier: codeVerifier,
-        state: state,
-        returnedUrl: returnedUrl,
-        client: client));
+    final failureOrLoginEntity = await getAccessTokenUseCase(
+        Params(returnedUrl: returnedUrl, grant: grant));
     failureOrLoginEntity.fold((failure) => throw UnimplementedError(),
         (loginEntity) {
       LoggedUser.current().loginCredentials = loginEntity;

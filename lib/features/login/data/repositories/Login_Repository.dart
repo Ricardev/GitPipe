@@ -15,19 +15,12 @@ class LoginRepository implements ILoginRepository {
       {required this.networkInfo, required this.iLoginRemoteDataSource});
   @override
   Future<Either<Failure, LoginEntity>> getAuthorizationCode(
-      {required String codeChallenge,
-      required String codeVerifier,
-      required String state,
-      required String returnedUrl,
-      required Client client}) async {
+      {required String returnedUrl,
+      required AuthorizationCodeGrant grant}) async {
     if (await networkInfo.isConnected != ConnectivityResult.none) {
       try {
         final accessToken = await iLoginRemoteDataSource.getAccessToken(
-            codeChallenge: codeChallenge,
-            codeVerifier: codeVerifier,
-            state: state,
-            returnedUrl: returnedUrl,
-            client: client);
+            returnedUrl: returnedUrl, grant: grant);
         return Right(accessToken);
       } on ServerExceptions {
         return Left(ServerFailure());

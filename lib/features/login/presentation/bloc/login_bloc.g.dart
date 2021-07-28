@@ -29,17 +29,9 @@ mixin _$LoginBloc on _LoginBlocBase, Store {
 
   @override
   Future<void> getAccessToken(
-      {required String codeChallenge,
-      required String codeVerifier,
-      required String state,
-      required String returnedUrl,
-      required Client client}) {
-    return _$getAccessTokenAsyncAction.run(() => super.getAccessToken(
-        codeChallenge: codeChallenge,
-        codeVerifier: codeVerifier,
-        state: state,
-        returnedUrl: returnedUrl,
-        client: client));
+      {required String returnedUrl, required AuthorizationCodeGrant grant}) {
+    return _$getAccessTokenAsyncAction.run(
+        () => super.getAccessToken(returnedUrl: returnedUrl, grant: grant));
   }
 
   @override
