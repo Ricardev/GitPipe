@@ -23,11 +23,7 @@ class GitLabView extends StatefulWidget {
 
 class _GitLabViewState extends State<GitLabView> {
   late final LoginBloc loginBloc;
-  late Connectivity connectivity;
-  late Dio dio;
   late WebViewController _webViewController;
-  final codeVerifier = Generator.getRandomString(mockInteger(43, 128));
-  final state = GitPipe.state;
   late final AuthorizationCodeGrant grant;
   var authUrl;
 
@@ -42,7 +38,6 @@ class _GitLabViewState extends State<GitLabView> {
 
     authUrl = grant.getAuthorizationUrl(Uri.parse(GitPipe.redirectUrl));
 
-    dio = Dio();
     final getAccessTokenUseCase = injector.get<GetAccessTokenUseCase>();
     loginBloc = LoginBloc(
         getAccessTokenUseCase: getAccessTokenUseCase,
